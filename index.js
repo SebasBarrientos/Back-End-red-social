@@ -9,6 +9,8 @@ const PORT = process.env.PORT || 3001;
 
 dbConnection()
 app.use(express.json())
+app.use('/images', express.static(path.join(__dirname, 'images')));
+app.use('/images', express.static('/images'));
 app.use('/users', require('./routes/users'));
 app.use("/posts", require("./routes/posts"));
 app.use("/comments", require("./routes/comments"));
