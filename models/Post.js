@@ -9,7 +9,7 @@ const PostSchema = new mongoose.Schema({
     },
     userId: {
         type:ObjectId, 
-    ref:'User',
+        ref:'User',
         required: [true, 'Yo must be logged']
     },
     taggedpeople: [],

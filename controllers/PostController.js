@@ -26,7 +26,11 @@ const PostController = {
   async getAll(req, res) {
     try {
       const { page = 1, limit = 10 } = req.query;
-      const posts = await Post.find().limit(limit).skip((page - 1) * limit).populate("userId");
+      const posts = await Post.find().limit(limit).skip((page - 1) * limit).populate("userId").populate({path: 'commentsIds',
+        populate: {
+          path: 'userId',
+          model: 'User'
+        }}).populate("likes");
       res.send(posts);
     } catch (error) {
       console.error(error);
