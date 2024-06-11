@@ -26,11 +26,13 @@ const PostController = {
   async getAll(req, res) {
     try {
       const { page = 1, limit = 10 } = req.query;
-      const posts = await Post.find().limit(limit).skip((page - 1) * limit).populate("userId").populate({path: 'commentsIds',
+      const posts = await Post.find().limit(limit).skip((page - 1) * limit).populate("userId").populate({
+        path: 'commentsIds',
         populate: {
           path: 'userId',
           model: 'User'
-        }}).populate("likes");
+        }
+      }).populate("likes");
       res.send(posts);
     } catch (error) {
       console.error(error);
@@ -49,7 +51,7 @@ const PostController = {
         res.send({ message: "Post successfully updated", post });
       } else {
         const imgpost = req.file.path;
-        const update= {...req.body, imgpost}
+        const update = { ...req.body, imgpost }
         const post = await Post.findByIdAndUpdate(
           req.params._id,
           update,
@@ -72,7 +74,7 @@ const PostController = {
       );
       const commentsIds = post.commentsIds.map(comment => comment._id);
       await Comment.deleteMany({
-        postId:req.params._id
+        postId: req.params._id
       });
       await User.updateMany(
         { comments: { $in: commentsIds } },
@@ -86,11 +88,13 @@ const PostController = {
   },
   async getById(req, res) {
     try {
-      const post = await Post.findById(req.params._id).populate("userId").populate({path: 'commentsIds',
+      const post = await Post.findById(req.params._id).populate("userId").populate({
+        path: 'commentsIds',
         populate: {
           path: 'userId',
           model: 'User'
-        }}).populate("likes");
+        }
+      }).populate("likes");
       res.send(post);
     } catch (error) {
       console.error(error);
@@ -138,7 +142,13 @@ const PostController = {
         req.params._id,
         { $push: { likes: req.user._id } },
         { new: true }
-      );
+      ).populate("userId").populate({
+        path: 'commentsIds',
+        populate: {
+          path: 'userId',
+          model: 'User'
+        }
+      }).populate("likes");;
       await User.findByIdAndUpdate(
         req.user._id,
         { $push: { likes: req.params._id } },
@@ -160,7 +170,13 @@ const PostController = {
         req.params._id,
         { $pull: { likes: req.user._id } },
         { new: true }
-      );
+      ).populate("userId").populate({
+        path: 'commentsIds',
+        populate: {
+          path: 'userId',
+          model: 'User'
+        }
+      }).populate("likes");;
       await User.findByIdAndUpdate(
         req.user._id,
         { $pull: { likes: req.params._id } },
