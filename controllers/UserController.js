@@ -73,7 +73,7 @@ const UserController = {
     },
     async getById(req, res) {
         try {
-            const user = await User.findById(req.params._id)
+            const user = await User.findById(req.params._id).populate({ path: "followers", select: "userName" }).populate("posts")
             res.send({ message: 'user:', user});
         } catch (error) {
             console.error(error);
