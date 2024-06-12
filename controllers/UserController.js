@@ -84,8 +84,8 @@ const UserController = {
             if (req.query.name.length > 20) {
                 return res.status(400).send('Búsqueda demasiado larga')
             }
-            const name = new RegExp(req.query.name, "i");
-            const user = await User.find({ name });
+            const userName = new RegExp(req.query.name, "i");
+            const user = await User.find({ userName });
             res.send({ message: 'user:', user});
         } catch (error) {
             console.error(error);
