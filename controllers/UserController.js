@@ -170,7 +170,7 @@ const UserController = {
                 { $push: { following: userFollowed } },
                 { new: true }
             );
-            res.send({ message: "You successfully followed ", follow});
+            res.send({ message: "You successfully followed ",user: follow});
         } catch (error) {
             console.error(error);
             res.status(500).send({ message: "There was a problem when you followed the user" });
@@ -195,7 +195,7 @@ const UserController = {
                 { $pull: { following: userUnfollowed } },
                 { new: true }
             );
-            res.send({ message: "You successfully unfollowed ",unfollow});
+            res.send({ message: "You successfully unfollowed ",user:unfollow});
         } catch (error) {
             console.error(error);
             res.status(500).send({ message: "There was a problem when you unfollowed the user" });
