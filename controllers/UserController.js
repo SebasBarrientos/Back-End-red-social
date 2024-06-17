@@ -21,26 +21,26 @@ const UserController = {
                 return res.status(400).send({ message: "The email or username is already taken" })
             } else if (!req.file) {
                 const password = bcrypt.hashSync(req.body.password, 10)
-                const user = await User.create({ ...req.body, password, role: "user" })
-                await transporter.sendMail({
-                    to: req.body.email,
-                    subject: "Confirm your email",
-                    html: `<h3>Confirm your email</h3>
-                    <a href="${url}">Click to confirm</a>
-                    `,
-                })
+                const user = await User.create({ ...req.body, password, role: "user", confirmed:"true" })
+                // await transporter.sendMail({
+                //     to: req.body.email,
+                //     subject: "Confirm your email",
+                //     html: `<h3>Confirm your email</h3>
+                //     <a href="${url}">Click to confirm</a>
+                //     `,
+                // })
                 res.status(201).send(user)
             } else {
                 const profilePic = req.file.path;
                 const password = bcrypt.hashSync(req.body.password, 10)
-                const user = await User.create({ ...req.body, password, role: "user", profilePic })
-                await transporter.sendMail({
-                    to: req.body.email,
-                    subject: "Confirm your email",
-                    html: `<h3>Confirm your email</h3>
-                    <a href="${url}">Click to confirm</a>
-                    `,
-                })
+                const user = await User.create({ ...req.body, password, role: "user", confirmed:"true", profilePic })
+                // await transporter.sendMail({
+                //     to: req.body.email,
+                //     subject: "Confirm your email",
+                //     html: `<h3>Confirm your email</h3>
+                //     <a href="${url}">Click to confirm</a>
+                //     `,
+                // })
                 res.status(201).send(user)
             }
         } catch (error) {
